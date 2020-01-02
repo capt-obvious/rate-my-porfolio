@@ -16,15 +16,18 @@ import { Link, Route } from "react-router-dom";
 import styled from "styled-components";
 
 const NavDiv = styled.div`
+  display: inline-block;
+  margin-top: 0px;
+  position: fixed;
   width: 25%;
   min-width: 200px;
   background-color: white;
-  height: 100vw;
+  height: 100vh;
   border-right: 1px solid lightgrey;
 `;
 
 const UL = styled.ul`
-  padding: 0px;
+  padding-left: 5%;
   margin: 0px;
   margin-top: 100px;
   position: fixed;
@@ -35,8 +38,8 @@ const UL = styled.ul`
 
 const StyledLink = styled(Link)`
   margin-top: 30px;
+  margin-left: 0px;
   margin-bottom: 30px;
-  margin-left: 50px;
   font-size: 1.5rem;
   font-family: ;
   color: #333;
