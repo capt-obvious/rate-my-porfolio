@@ -5,4 +5,6 @@ export const Header1 = styled.h1`
   font-weight: 500;
 `
 
-export const SubHeader = styled.p``
+export const SubHeader = styled.p`
+  font-weight: 450;
+`

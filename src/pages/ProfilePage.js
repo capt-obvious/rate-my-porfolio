@@ -38,6 +38,12 @@ const GraphSection = styled(StyledSection)``
 const PortfolioSection = styled(StyledSection)``
 const PostsSection = styled(StyledSection)``
 
+const Row = styled.div`
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 1em;
+`
+
 const ProfilePage = () => {
   const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
 
@@ -46,8 +52,10 @@ const ProfilePage = () => {
       <Avatar />
       <Header1>Username</Header1>
       <ProfileText>User Bio</ProfileText>
-      <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
-      <ProfileText>Location stat</ProfileText>
+      <Row>
+        <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
+      </Row>
+      <ProfileText>Location, stat</ProfileText>
     </UserSection>
     <HoldingsSection>
       <Header1>Top 10 Holdings</Header1>
