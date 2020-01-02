@@ -1,13 +1,24 @@
-import React from 'react'
-import ProfilePage from './pages/ProfilePage'
+import React from "react"
+import "./App.css";
+import { Route } from "react-router-dom";
+import Navbar from "./components/Navbar.js";
 
-function App () {
+// component imports
+import Feed from "./components/Feed/Feed.js";
+import Home from "./pages/Home.js";
+import ProfilePage from "./pages/ProfilePage.js";
+
+function App() {
   return (
-    <div className='App'>
-      <h3>Rate my portfolio</h3>
-      <ProfilePage />
+    <div className="">
+      <Route exact path="/">
+        <Home />>
+      </Route>
+      <Route path="/profile/:id">
+        <ProfilePage />
+      </Route>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
