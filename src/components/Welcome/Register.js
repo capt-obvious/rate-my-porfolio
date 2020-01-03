@@ -171,7 +171,7 @@ class Register extends Component {
           </Col>
           <Col md={1}>
             <FormGroup>
-              <Label for="exampleCountry">Zip</Label>
+              <Label for="exampleCountry">Country</Label>
               <Input
                 type="text"
                 name="country"
