@@ -14,28 +14,32 @@ module.exports = {
   };
   
   function find() {
-    return db('posts');
+    return db('posts').select('id', 'title', 'contents', 'date', 'time', 'liked', 'user_id');
   }
   
   function findById(id) {
-    return db('posts').where({ id: Number(id) });
+    return db('posts').where({id})
+          .first();
   }
   
   function insert(post) {
     return db('posts')
       .insert(post, 'id')
-      .then(ids => ({ id: ids[0] }));
-  }
+      .then(ids => {
+        const [id] = ids;
+        return findById(id);
+      });
+    }
   
-  function update(id, post) {
+  function update(changes, id) {
     return db('posts')
-      .where('id', Number(id))
-      .update(post);
+      .where({id})
+      .update(changes);
   }
   
   function remove(id) {
     return db('posts')
-      .where('id', Number(id))
+      .where({id})
       .del();
   }
   

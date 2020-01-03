@@ -1,4 +1,6 @@
-const db = require('../database/dbConfig');
+const knex = require('knex');
+const knexConfig = require('../knexfile');
+const db = knex(knexConfig.development || process.env(DATABASE_URL));
 
 module.exports = {
     add,

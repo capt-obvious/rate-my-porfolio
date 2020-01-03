@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 const restricted = require('../auth/authenticate-middleware');
+const Posts = require('../posts/posts-model');
 
 //GET /api/posts
 router.get('/', restricted, (req, res) => {
