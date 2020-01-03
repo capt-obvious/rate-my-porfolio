@@ -8,6 +8,7 @@ exports.up = function(knex) {
         users.string('password', 128)
              .notNullable();
         users.string('name', 128);
+        users.string('email', 128);
         users.date('date');
         users.string('address', 128);
         users.string('city', 128)
