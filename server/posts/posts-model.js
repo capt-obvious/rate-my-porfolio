@@ -8,13 +8,15 @@ module.exports = {
     insert,
     update,
     remove,
+    findUserPosts,
+    findPostById,
     findPostComments,
     findCommentById,
     insertComment,
   };
   
   function find() {
-    return db('posts').select('id', 'title', 'contents', 'date', 'time', 'liked', 'user_id');
+    return db('posts')
   }
   
   function findById(id) {
@@ -42,6 +44,24 @@ module.exports = {
       .where({id})
       .del();
   }
+
+
+
+  function findUserPosts(userId) {
+    console.log(userId)
+    return db('posts')
+      .innerJoin('users', 'users.id', 'posts.user_id')
+      .where({'posts.user_id': userId});
+  }
+  
+  function findPostById(id) {
+    return db('posts')      
+      .join('users', 'posts.user_id', '=', 'user.id')
+      .select('posts.*')
+      .where('posts.id', id);
+  }
+  
+  
   
   function findPostComments(postId) {
     return db('comments')

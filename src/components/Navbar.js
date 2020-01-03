@@ -14,15 +14,14 @@
 import React from "react";
 import { Link, Route } from "react-router-dom";
 import styled from "styled-components";
+import { UserContext } from "../utils/Contexts.js";
 
 const NavDiv = styled.div`
   display: inline-block;
   margin-top: 0px;
-  position: fixed;
-  width: 25%;
   min-width: 200px;
   background-color: white;
-  height: 100vh;
+  min-height: 100vh;
   border-right: 1px solid lightgrey;
 `;
 
@@ -50,12 +49,16 @@ const StyledLink = styled(Link)`
 `;
 
 const Navbar = () => {
+  const { user } = React.useContext(UserContext);
+
   return (
     <NavDiv className="navbar-sidebar">
       <UL>
-        <StyledLink to="/profile/$userId">Profile/Portfolio</StyledLink>
+        <StyledLink to={`/profile/${user.username}`}>
+          Profile/Portfolio
+        </StyledLink>
         <StyledLink>Notifications</StyledLink>
-        <StyledLink>Watchlist</StyledLink>
+        <StyledLink to='/trending'>Trending</StyledLink>
         <StyledLink to="/tradeform">Trade [+]</StyledLink>
       </UL>
     </NavDiv>

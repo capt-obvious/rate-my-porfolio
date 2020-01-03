@@ -10,9 +10,11 @@ router.post("/register", (req, res) => {
   user.password = hash;
 
   Users.add(user)
-    .then(saved => {
+    .then(addedUser => {
+      const token = signToken(addedUser)
       res.status(201).json({
-        saved,
+        user: addedUser,
+        token,
         message: "User registered successfully"
       });
     })
@@ -50,9 +52,7 @@ router.post("/login", (req, res) => {
 router.post("/tokenLogin", (req, res) => {
   const { token } = req.body;
   const secret = process.env.JWT_SECRET || "keep it secret";
-  console.log(token, secret);
   const decoded = jwt.verify(token, secret);
-  console.log(decoded);
   Users.findByUserName(decoded.username)
     .then(user => {
       res.status(200).json({

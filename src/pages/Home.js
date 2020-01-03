@@ -4,7 +4,6 @@ import Navbar from "../components/Navbar.js";
 const Feed = () => {
   return (
     <div>
-      <Navbar />
       <h1
         style={{
           marginLeft: "25%",

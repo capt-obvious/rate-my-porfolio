@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
 import Avatar from "../components/Avatar";
+import Loading from '../components/Loading'
 import Posts from "../components/Posts";
 import PortfolioGraph from "../components/PortfolioGraph";
 import { ProfileContainer } from "../components/Containers";
@@ -45,31 +47,44 @@ const Row = styled.div`
   grid-gap: 1em;
 `;
 
-const ProfilePage = () => {
-  const [loading, setLoading] = React.useState(false)
-  const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
+const ProfilePage = props => {
+  const [loading, setLoading] = React.useState(false);
+  const [user, setUser] = React.useState({})
+  const [companies, setCompanies] = React.useState([
+    "Company 1",
+    "Company 2",
+    "Company 3"
+  ]);
 
-  const { user, setUser } = React.useContext(UserContext)
-  console.log(user, setUser)
-
-  const loadData = () => {
-    setLoading(true)
-    setLoading(false)
-  }
+  const fetchData = () => {
+    setLoading(true);
+    const token = window.localStorage.getItem("token");
+    axios({
+      method: "get",
+      url: `http://localhost:3300/api/users/${props.match.params.id}`,
+      headers: {
+        "Authorization": token
+      }
+    })
+      .then(res => {
+        setLoading(false);
+        setUser(res.data);
+      });
+  };
 
   React.useEffect(() => {
-    loadData()
-  }, [])
+    fetchData();
+  }, []);
 
-  return loading ? <div>Loading...</div> : <ProfileContainer>
+  return loading ? <Loading /> : <ProfileContainer>
     <UserSection>
       <Avatar />
-      <Header1>Username</Header1>
+      <Header1>{user.username}</Header1>
       <ProfileText>User Bio</ProfileText>
       <Row>
         <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
       </Row>
-      <ProfileText>Location, stat</ProfileText>
+      <ProfileText>{`${user.city}, ${user.country}`}</ProfileText>
     </UserSection>
     <HoldingsSection>
       <Header1>Top 10 Holdings</Header1>

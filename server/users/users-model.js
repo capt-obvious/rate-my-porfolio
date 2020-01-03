@@ -13,7 +13,7 @@ module.exports = {
 };
 
 function find(){
-    return db('users').select('id', 'username', 'name', 'email', 'date', 'address', 'city', 'zip', 'country', 'gender', 'dob', 'avatar', 'bio', 'portfolio-size');
+    return db('users').select('id', 'username', 'name', 'email', 'date', 'address', 'city', 'state', 'zip', 'country', 'gender', 'dob', 'avatar', 'bio', 'portfolio-size');
 }
 
 function findBy(filter){

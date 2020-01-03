@@ -6,47 +6,53 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import axios from "axios";
 
 // component imports
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import TradeForm from "./components/TradeForm.js";
+import Trending from './pages/Trending'
 import Welcome from "./pages/Welcome";
 import { UserContext } from "./utils/Contexts.js";
-import Axios from "axios";
 
 function App() {
   const { user, setUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
-    if (!user.username) {
+    if (!user.id) {
       const token = window.localStorage.getItem("token");
-      console.log(token);
-      axios
-        .post("http://localhost:3300/api/auth/tokenLogin", { token })
-        .then(res => setUser(res.data.user));
+      if (token) {
+        axios
+          .post("http://localhost:3300/api/auth/tokenLogin", { token })
+          .then(res => setUser(res.data.user));
+      }
     }
   }, []);
 
-  return user.username ? (
+  return user.id ? (
     <Router>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-
-        <Route path="/profile/:id">
-          <ProfilePage />
-        </Route>
-        <Route path="/tradeform">
-          <TradeForm />
-        </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route
+            path="/profile/:id"
+            render={props => <ProfilePage {...props} />}
+          />
+          <Route path="/trending">
+            <Trending />
+          </Route>
+          <Route path="/tradeform">
+            <TradeForm />
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Layout>
     </Router>
   ) : (
     <Router>

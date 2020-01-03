@@ -10,23 +10,24 @@ import {
   FormFeedback
 } from "reactstrap";
 import axios from "axios";
+import { UserContext } from '../../utils/Contexts'
 
 class Register extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+    static contextType = UserContext
+
+    state = {
       username: "",
       email: "",
       password: "",
+      confirmPassword: "",
       address: "",
       city: "",
+      state: "",
       country: "",
       validate: {}
     };
-    this.handleChange = this.handleChange.bind(this);
-  }
 
-  validateEmail(e) {
+  validateEmail = (e) => {
     const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const { validate } = this.state;
     if (emailRex.test(e.target.value)) {
@@ -37,23 +38,22 @@ class Register extends Component {
     this.setState({ validate });
   }
 
-  async handleChange(event) {
+  handleChange = (event) => {
     const { target } = event;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const { name } = target;
-    await this.setState({
-      [name]: value
-    });
-    console.log(this.state);
+    this.setState({ [name]: value });
   }
 
-  submitForm(e) {
+  submitForm = (e) => {
     e.preventDefault();
-    const { validate, email, address, ...restState } = this.state;
+    const { validate, confirmPassword, ...restState } = this.state;
     axios
       .post("http://localhost:3300/api/auth/register", restState)
       .then(res => {
         console.log(res);
+        window.localStorage.setItem("token", res.data.token)
+        this.context.setUser(res.data.user)
       })
       .catch(err => {
         console.log(err);
@@ -61,7 +61,7 @@ class Register extends Component {
   }
 
   render() {
-    const { username, email, password, address, city, country } = this.state;
+    const { username, email, password, confirmPassword, address, city, state, country } = this.state;
     return (
       <Form className="registerStyle" onSubmit={e => this.submitForm(e)}>
         <Row form>
@@ -74,7 +74,7 @@ class Register extends Component {
                 id="exampleName"
                 placeholder="username"
                 value={username}
-                onChange={e => this.handleChange(e)}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
@@ -85,7 +85,7 @@ class Register extends Component {
                 id="examplePassword"
                 placeholder="password"
                 value={password}
-                onChange={e => this.handleChange(e)}
+                onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
@@ -112,11 +112,11 @@ class Register extends Component {
               <Label for="examplePassword">Confirm Password</Label>
               <Input
                 type="password"
-                name="password"
-                id="examplePassword"
-                placeholder="password"
-                value={password}
-                onChange={e => this.handleChange(e)}
+                name="confirmPassword"
+                id="exampleConfirmPassword"
+                placeholder="confirm password"
+                value={confirmPassword}
+                onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
@@ -131,7 +131,7 @@ class Register extends Component {
               id="exampleAddress"
               placeholder="1234 Main St"
               value={address}
-              onChange={e => this.handleChange(e)}
+              onChange={this.handleChange}
             />
           </FormGroup>
           <FormGroup>
@@ -154,7 +154,7 @@ class Register extends Component {
                 id="exampleCity"
                 placeholder="San Francisco"
                 value={city}
-                onChange={e => this.handleChange(e)}
+                onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
@@ -166,19 +166,21 @@ class Register extends Component {
                 name="state"
                 id="exampleState"
                 placeholder="CA"
+                value={state}
+                onChange={this.handleChange}
               />
             </FormGroup>
           </Col>
           <Col md={1}>
             <FormGroup>
-              <Label for="exampleCountry">Zip</Label>
+              <Label for="exampleCountry">Country</Label>
               <Input
                 type="text"
                 name="country"
                 id="exampleCountry"
                 placeholder="country"
                 value={country}
-                onChange={e => this.handleChange(e)}
+                onChange={this.handleChange}
               />
             </FormGroup>
           </Col>

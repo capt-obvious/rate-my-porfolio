@@ -1,27 +1,26 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const Users = require('./users-model');
-const restricted = require('../auth/authenticate-middleware');
+const Users = require("./users-model");
+const restricted = require("../auth/authenticate-middleware");
 
+// GET /api/users/  return all users
 router.get('/', restricted, (req, res) => {
-    Users.find()
+  Users.find()
     .then(users => {
-        res.json(users);
+      res.json(users);
     })
     .catch(err => res.send(err));
 });
 
-router.get('/:id', restricted, (req, res) => {
-    Users.findById(req.params.id)
-    .then(user => {
-        res.status(200).json(user)
-    })
+//GET a single user by username
+router.get('/:username', restricted, (req, res) => {
+  Users.findByUserName(req.params.username)
+    .then(user => res.json(user))
     .catch(err => res.send(err))
-})
+});
 
-// Do we need this endpoint to be restricted? 
-// I'd imagine we're trying to register a new user with this endpoint.
 
+//update a user
 router.put('/:id', restricted, (req, res) => {
     const payload = {
         username: req.body.username,
@@ -47,6 +46,8 @@ router.put('/:id', restricted, (req, res) => {
         })
 })
 
+
+//delete a user
 router.delete('/:id', restricted, (req, res) => {
     Users.remove(req.params.id)
     .then(user => {
@@ -61,4 +62,26 @@ router.delete('/:id', restricted, (req, res) => {
     })
 })
 
+
+
 module.exports = router;
+
+
+
+
+
+//GET /api/users/:id   get user by id
+// router.get('/:id', restricted, (req, res) => {
+//     const id = req.params.id;
+//     Users.findById(id)
+//     .then(user => {
+//         res.json(user);
+//     })
+//     .catch(err => res.send(err));
+// });
+
+//edit user
+
+// delete user
+
+// module.exports = router;
