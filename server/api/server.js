@@ -16,6 +16,6 @@ server.use(express.json());
 
 server.use('/api/auth', authRouter);
 server.use('/api/posts', authenticate, postsRouter);
-server.use('/api/users', authenticate, userRouter);
+server.use('/api/users',  userRouter);
 
 module.exports = server;

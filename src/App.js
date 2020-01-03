@@ -36,26 +36,18 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
-
-        <Route path="/profile/:id">
-          <ProfilePage />
+        <Route path="/welcome">
+          <Welcome />
         </Route>
+        <Route
+          path="/profile/:id"
+          render={props => <ProfilePage {...props} />}
+        />
         <Route path="/tradeform">
           <TradeForm />
         </Route>
         <Route path="*">
           <Redirect to="/" />
-        </Route>
-      </Switch>
-    </Router>
-  ) : (
-    <Router>
-      <Switch>
-        <Route path="/welcome">
-          <Welcome />
-        </Route>
-        <Route path="*">
-          <Redirect to="/welcome" />
         </Route>
       </Switch>
     </Router>
