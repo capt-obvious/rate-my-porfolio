@@ -1,6 +1,6 @@
 import React from "react"
 import "./App.css"
-import { Route } from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 import Navbar from "./components/Navbar"
 
 // component imports
@@ -10,15 +10,20 @@ import ProfilePage from "./pages/ProfilePage"
 
 function App() {
   return (
-    <div className="">
-      <Route exact path="/">
-        <Home />>
-      </Route>
-      <Route path="/profile/:id">
-        <ProfilePage />
-      </Route>
-    </div>
-  );
+    <Router>
+      <Switch>
+        <Route exact path='/'>
+          <Home />
+        </Route>
+        <Route path='/profile/:id'>
+          <ProfilePage />
+        </Route>
+        <Route path='*'>
+          <Redirect to='/' />
+        </Route>
+      </Switch>
+    </Router>
+  )
 }
 
 export default App

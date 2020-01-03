@@ -45,9 +45,19 @@ const Row = styled.div`
 `
 
 const ProfilePage = () => {
+  const [loading, setLoading] = React.useState(false)
   const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
 
-  return <ProfileContainer>
+  const loadData = () => {
+    setLoading(true)
+    setLoading(false)
+  }
+
+  React.useEffect(() => {
+    loadData()
+  }, [])
+
+  return loading ? <div>Loading...</div> : <ProfileContainer>
     <UserSection>
       <Avatar />
       <Header1>Username</Header1>
