@@ -1,41 +1,42 @@
 import React from "react";
+import axios from "axios";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 
 const Login = props => {
+  const initialState = { username: '', password: '' }
+  const reducer = (state, action) => {
+    if (!state || !action) return initialState
+    return { ...state, ...action }
+  }
+  const [credentials, setCredentials] = React.useReducer(reducer, initialState)
+  const handleLogin = (e) => {
+    e.preventDefault()
+    axios
+      .post("http://localhost:3300/api/auth/login", credentials)
+      .then(res => {
+      console.log(res);
+      })
+      .catch(err => {
+      console.log(err);
+      });
+  }
+
+  const onChange = (event) => {
+    const { target } = event;
+    const { name, value } = target;
+    setCredentials({ [name]: value })
+    console.log(credentials);
+  }
+
   return (
     <Form inline>
       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-<<<<<<< HEAD
-        <Label for="exampleEmail" className="mr-sm-2">
-          Email
-        </Label>
-        <Input
-          type="text"
-          name="user"
-          id="exampleEmail"
-          placeholder="username"
-        />
+        <Input type="text" name="username" id="exampleUsername" placeholder="username" value={credentials.username} onChange={onChange} />
       </FormGroup>
       <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-        <Label for="examplePassword" className="mr-sm-2">
-          Password
-        </Label>
-        <Input
-          type="password"
-          name="password"
-          id="examplePassword"
-          placeholder="don't tell!"
-        />
-=======
-        <Label for="exampleEmail" className="mr-sm-2"></Label>
-        <Input type="email" name="email" id="exampleEmail" placeholder="email address" />
+        <Input type="password" name="password" id="examplePassword" placeholder="password" value={credentials.password} onChange={onChange} />
       </FormGroup>
-      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-        <Label for="examplePassword" className="mr-sm-2"></Label>
-        <Input type="password" name="password" id="examplePassword" placeholder="password" />
->>>>>>> david-francis
-      </FormGroup>
-      <Button>Submit</Button>
+      <Button onClick={handleLogin}>Submit</Button>
     </Form>
   );
 };
