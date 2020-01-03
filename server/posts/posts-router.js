@@ -4,12 +4,12 @@ const router = express.Router();
 
 const restricted = require('../auth/authenticate-middleware');
 const Posts = require('../posts/posts-model');
-const Users = require('../users/users-model');
 
-//GET /api/users/:id/posts/  get all posts by user
-router.get('/', restricted, (req, res) => {
-    Posts.find(req.query)
-    const id = req.params.id;
+
+//GET /api/posts/:id  get all posts by user
+router.get('/:id', (req, res) => {
+    const {id} = req.params;
+    console.log(id)
     Posts.findUserPosts(id)
     .then(post => {
         if(post.length){
@@ -25,29 +25,29 @@ router.get('/', restricted, (req, res) => {
   
 })
 
-//GET /api/users/:id/posts/:id   get user's post by post id
-router.get('/:id', restricted, (req, res) => {
-    const id = req.params.id;
-    Posts.findPostsById(id)
-        .then(post => {
-            if(post.length) {
-                res.status(200).json(post);
-            }else{
-                res.status(404).json({ message: "The post with the specified ID does not exist."})
-            }
-        })
-        .catch(error => {
-            console.log("Error on GET api/posts/:id", error);
-            res.status(500).json({error: "The post information could not be retrieved."})
-        })
+//GET /api/posts/post/:id   get user's post by post id
+// router.get('/post/:id', restricted, (req, res) => {
+//     const id = req.params.id;
+//     Posts.findPostById(id)
+//         .then(post => {
+//             if(post.length) {
+//                 res.status(200).json(post);
+//             }else{
+//                 res.status(404).json({ message: "The post with the specified ID does not exist."})
+//             }
+//         })
+//         .catch(error => {
+//             console.log("Error on GET api/posts/:id", error);
+//             res.status(500).json({error: "The post information could not be retrieved."})
+//         })
     
-})
+// })
 
-//GET /api/users/posts/  get all posts
+//GET /api/posts/  get all posts
 router.get('/', restricted, (req, res) => {
     Posts.find(req.query)
         .then(posts => {
-            if(this.post.length){
+            if(posts){
                 res.status(200).json(posts);
             }else{
                 res.status(404).json({ message: "Error fetching posts."})
@@ -59,7 +59,7 @@ router.get('/', restricted, (req, res) => {
         })
 })
 
-//POST /api/users/:id/posts/   add new post 
+//POST /api/posts/   add new post 
 router.post('/', restricted, (req, res) => {
     const postData = req.body;
     if(!postData.title || !postData.contents){
@@ -77,10 +77,10 @@ router.post('/', restricted, (req, res) => {
     }
 });
 
-//POST /api/users/:id/posts/:id/comments
+//POST /api/posts/:id/comments
 router.post('/:id/comments', restricted, (req, res) => {
     const commentData = req.body;
-    if(!commentData.text){
+    if(!commentData.comment){
         res.status(400).json({errorMessage: "Please provide text for the comment."})
     }else {
     Posts.insertComment(commentData)
@@ -96,7 +96,7 @@ router.post('/:id/comments', restricted, (req, res) => {
 
 
 
-//GET /api/users/:id/posts/:id/comments
+//GET /api/posts/:id/comments
 router.get('/:id/comments', restricted, (req, res) => {
     const id = req.params.id;
     Posts.findCommentById(id)
@@ -114,7 +114,7 @@ router.get('/:id/comments', restricted, (req, res) => {
   
 })
 
-//PUT /api/users/:id/posts/:id
+//PUT /api/posts/:id   edit post
 router.put('/:id', restricted, (req, res) => {
     const item = req.body;
     const id = req.params.id;
@@ -137,7 +137,7 @@ router.put('/:id', restricted, (req, res) => {
     };
 });  
 
-//DELETE /api/users/:id/posts/:id
+//DELETE /api/posts/:id  delete post
 router.delete('/:id', restricted, (req, res) => {
     const id = req.params.id;
     Posts.remove(id)

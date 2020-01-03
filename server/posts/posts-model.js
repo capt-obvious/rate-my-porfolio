@@ -17,7 +17,7 @@ module.exports = {
   };
   
   function find() {
-    return db('posts').select('id', 'title', 'contents', 'date', 'time', 'liked', 'user_id');
+    return db('posts')
   }
   
   function findById(id) {
@@ -49,10 +49,10 @@ module.exports = {
 
 
   function findUserPosts(userId) {
+    console.log(userId)
     return db('posts')
-      .join('users', 'posts.user_id', '=', 'user.id')
-      .select('posts.*')
-      .where('user_id', userId);
+      .innerJoin('users', 'users.id', 'posts.user_id')
+      .where({'posts.user_id': userId});
   }
   
   function findPostById(id) {
