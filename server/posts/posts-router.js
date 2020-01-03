@@ -5,19 +5,61 @@ const router = express.Router();
 const restricted = require('../auth/authenticate-middleware');
 const Posts = require('../posts/posts-model');
 
-//GET /api/posts
+
+//GET /api/posts/:id  get all posts by user
+router.get('/:id', (req, res) => {
+    const {id} = req.params;
+    console.log(id)
+    Posts.findUserPosts(id)
+    .then(post => {
+        if(post.length){
+        res.status(200).json(post);
+        }else {
+            res.status(404).json({message: "The post with the specified ID does not exist."})
+        }
+    })
+    .catch(error => {
+        console.log("Error on GET /api/users/:id/posts", error);
+        res.status(500).json({error: "The post information could not be retrieved."})
+    })
+  
+})
+
+//GET /api/posts/post/:id   get user's post by post id
+// router.get('/post/:id', restricted, (req, res) => {
+//     const id = req.params.id;
+//     Posts.findPostById(id)
+//         .then(post => {
+//             if(post.length) {
+//                 res.status(200).json(post);
+//             }else{
+//                 res.status(404).json({ message: "The post with the specified ID does not exist."})
+//             }
+//         })
+//         .catch(error => {
+//             console.log("Error on GET api/posts/:id", error);
+//             res.status(500).json({error: "The post information could not be retrieved."})
+//         })
+    
+// })
+
+//GET /api/posts/  get all posts
 router.get('/', restricted, (req, res) => {
     Posts.find(req.query)
         .then(posts => {
-            res.status(200).json(posts);
+            if(posts){
+                res.status(200).json(posts);
+            }else{
+                res.status(404).json({ message: "Error fetching posts."})
+            }
         })
         .catch(error => {
-            console.log("Error GET /api/posts", error);
-            res.status(500).json({error: "The posts information could not be retrieved."})
-        });
-});
+            console.log("Error on GET api/posts/:id", error);
+            res.status(500).json({error: "The posts could not be retrieved."})
+        })
+})
 
-//POST /api/posts
+//POST /api/posts/   add new post 
 router.post('/', restricted, (req, res) => {
     const postData = req.body;
     if(!postData.title || !postData.contents){
@@ -28,7 +70,7 @@ router.post('/', restricted, (req, res) => {
             res.status(201).json(postData);
         })
         .catch(error => {
-            console.log("POST error /api/posts", error);
+            console.log("POST error /api/users/:id/posts", error);
             res.status(500)
                 .json({ error: "There was an error while saving the post to the database"})
         });
@@ -38,7 +80,7 @@ router.post('/', restricted, (req, res) => {
 //POST /api/posts/:id/comments
 router.post('/:id/comments', restricted, (req, res) => {
     const commentData = req.body;
-    if(!commentData.text){
+    if(!commentData.comment){
         res.status(400).json({errorMessage: "Please provide text for the comment."})
     }else {
     Posts.insertComment(commentData)
@@ -52,23 +94,7 @@ router.post('/:id/comments', restricted, (req, res) => {
     } 
 })
 
-//GET /api/posts/:id
-router.get('/:id', restricted, (req, res) => {
-    const id = req.params.id;
-    Posts.findById(id)
-        .then(post => {
-            if(post.length) {
-                res.status(200).json(post);
-            }else{
-                res.status(404).json({ message: "The post with the specified ID does not exist."})
-            }
-        })
-        .catch(error => {
-            console.log("Error on GET api/posts/:id", error);
-            res.status(500).json({error: "The post information could not be retrieved."})
-        })
-    
-})
+
 
 //GET /api/posts/:id/comments
 router.get('/:id/comments', restricted, (req, res) => {
@@ -88,7 +114,7 @@ router.get('/:id/comments', restricted, (req, res) => {
   
 })
 
-//PUT /api/posts/:id
+//PUT /api/posts/:id   edit post
 router.put('/:id', restricted, (req, res) => {
     const item = req.body;
     const id = req.params.id;
@@ -111,7 +137,7 @@ router.put('/:id', restricted, (req, res) => {
     };
 });  
 
-//DELETE /api/posts/:id
+//DELETE /api/posts/:id  delete post
 router.delete('/:id', restricted, (req, res) => {
     const id = req.params.id;
     Posts.remove(id)
