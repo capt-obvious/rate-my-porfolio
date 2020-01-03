@@ -49,14 +49,12 @@ const Row = styled.div`
 
 const ProfilePage = props => {
   const [loading, setLoading] = React.useState(false);
+  const [user, setUser] = React.useState({})
   const [companies, setCompanies] = React.useState([
     "Company 1",
     "Company 2",
     "Company 3"
   ]);
-
-  const { user, setUser } = React.useContext(UserContext);
-  const [localUser, setLocalUser] = React.useState({})
 
   const fetchData = () => {
     setLoading(true);
@@ -70,7 +68,7 @@ const ProfilePage = props => {
     })
       .then(res => {
         setLoading(false);
-        setLocalUser(res.data);
+        setUser(res.data);
       });
   };
 
@@ -81,12 +79,12 @@ const ProfilePage = props => {
   return loading ? <Loading /> : <ProfileContainer>
     <UserSection>
       <Avatar />
-      <Header1>Username</Header1>
+      <Header1>{user.username}</Header1>
       <ProfileText>User Bio</ProfileText>
       <Row>
         <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
       </Row>
-      <ProfileText>Location, stat</ProfileText>
+      <ProfileText>{`${user.city}, ${user.country}`}</ProfileText>
     </UserSection>
     <HoldingsSection>
       <Header1>Top 10 Holdings</Header1>
