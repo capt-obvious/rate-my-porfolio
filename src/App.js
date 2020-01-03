@@ -40,7 +40,7 @@ function App() {
           <Welcome />
         </Route>
         <Route
-          path="/profile/:id"
+          path="/profile/:username"
           render={props => <ProfilePage {...props} />}
         />
         <Route path="/tradeform">
@@ -50,8 +50,8 @@ function App() {
           <Redirect to="/" />
         </Route>
       </Switch>
-    </Router>
-  );
+    </Router> 
+  )
 }
 
 export default App;
