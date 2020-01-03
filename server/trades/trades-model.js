@@ -6,6 +6,7 @@ module.exports = {
     find,
     findById,
     insert,
+    findUserTrades
 }
 
 function find(){
@@ -25,4 +26,11 @@ function insert(trade){
             const [id] = ids;
             return findById(id);
         })
+}
+
+function findUserTrades(userId){
+    console.log(userId)
+    return db('trades')
+        .leftJoin('users', 'users.id', 'trades.user_id')
+        .where({'trades.user_id': userId});
 }

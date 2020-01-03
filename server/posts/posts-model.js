@@ -9,7 +9,6 @@ module.exports = {
     update,
     remove,
     findUserPosts,
-    insertPost,
     findPostById,
     findPostComments,
     findCommentById,
@@ -62,14 +61,7 @@ module.exports = {
       .where('posts.id', id);
   }
   
-  function insertPost(post) {
-    return db('posts')
-      .insert(post)
-      .then(ids => ({ id: ids[0] }));
-  }
-
-
-
+  
   
   function findPostComments(postId) {
     return db('comments')

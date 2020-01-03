@@ -5,7 +5,7 @@ const router = express.Router();
 const restricted = require('../auth/authenticate-middleware');
 const Trades = require('../trades/trades-model');
 
-//POST /api/trades   add new trade 
+//POST /api/trades/   add new trade 
 router.post('/', restricted, (req, res) => {
     const tradeData = req.body;
     if(!tradeData.ticker || !tradeData.quantity){
@@ -38,4 +38,23 @@ router.get('/', restricted, (req, res) => {
             res.status(500).json({error: "The trades could not be retrieved."})
         })
 })
+
+//GET /api/trades/user/:id  get all trades by user
+router.get('user/:id', (req, res) => {
+    const {id} = req.params;
+    console.log(id)
+    Trades.findUserTrades(id)
+    .then(trade => {
+        if(trade.length){
+        res.status(200).json(trade);
+        }else {
+            res.status(404).json({message: "The trade with the specified ID does not exist."})
+        }
+    })
+    .catch(error => {
+        console.log("Error on GET /api/trades/:id", error);
+        res.status(500).json({error: "The trade information could not be retrieved."})
+    })
+})
+
 module.exports = router;
