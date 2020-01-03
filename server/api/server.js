@@ -15,7 +15,7 @@ server.use(cors());
 server.use(express.json());
 
 server.use('/api/auth', authRouter);
-server.use('/api/posts', authenticate, postsRouter);
+server.use('/api/users/:id/posts', authenticate, postsRouter);
 server.use('/api/users', authenticate, userRouter);
 
 module.exports = server;

@@ -8,6 +8,9 @@ module.exports = {
     insert,
     update,
     remove,
+    findUserPosts,
+    insertPost,
+    findPostById,
     findPostComments,
     findCommentById,
     insertComment,
@@ -42,6 +45,31 @@ module.exports = {
       .where({id})
       .del();
   }
+
+
+
+  function findUserPosts(userId) {
+    return db('posts')
+      .join('users', 'users.id', '=', 'posts.user_id')
+      .select('posts.*')
+      .where('user_id', userId);
+  }
+  
+  function findPostById(id) {
+    return db('posts')      
+      .join('users', 'users.id', '=', 'posts.user_id')
+      .select('posts.*')
+      .where('posts.id', id);
+  }
+  
+  function insertPost(post) {
+    return db('posts')
+      .insert(post)
+      .then(ids => ({ id: ids[0] }));
+  }
+
+
+
   
   function findPostComments(postId) {
     return db('comments')

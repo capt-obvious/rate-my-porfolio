@@ -5,37 +5,78 @@ const router = express.Router();
 const restricted = require('../auth/authenticate-middleware');
 const Posts = require('../posts/posts-model');
 
-//GET /api/posts
+//GET /api/users/:id/posts/  get all posts by user
+router.get('/', restricted, (req, res) => {
+    Posts.find(req.query)
+    const id = req.params.id;
+    Posts.findUserPosts(id)
+    .then(post => {
+        if(post.length){
+        res.status(200).json(post);
+        }else {
+            res.status(404).json({message: "The post with the specified ID does not exist."})
+        }
+    })
+    .catch(error => {
+        console.log("Error on GET /api/users/:id/posts/", error);
+        res.status(500).json({error: "The post information could not be retrieved."})
+    })
+  
+})
+
+//GET /api/users/:id/posts/:id   get post by post id
+router.get('/:id', restricted, (req, res) => {
+    const id = req.params.id;
+    Posts.findPostsById(id)
+        .then(post => {
+            if(post.length) {
+                res.status(200).json(post);
+            }else{
+                res.status(404).json({ message: "The post with the specified ID does not exist."})
+            }
+        })
+        .catch(error => {
+            console.log("Error on GET api/posts/:id", error);
+            res.status(500).json({error: "The post information could not be retrieved."})
+        })
+    
+})
+
+//GET /api/users/posts  get all posts
 router.get('/', restricted, (req, res) => {
     Posts.find(req.query)
         .then(posts => {
-            res.status(200).json(posts);
+            if(this.post.length){
+                res.status(200).json(posts);
+            }else{
+                res.status(404).json({ message: "Error fetching posts."})
+            }
         })
         .catch(error => {
-            console.log("Error GET /api/posts", error);
-            res.status(500).json({error: "The posts information could not be retrieved."})
-        });
-});
+            console.log("Error on GET api/posts/:id", error);
+            res.status(500).json({error: "The posts could not be retrieved."})
+        })
+})
 
-//POST /api/posts
+//POST /api/users/:id/posts   add new post   works
 router.post('/', restricted, (req, res) => {
     const postData = req.body;
     if(!postData.title || !postData.contents){
         res.status(400).json({ errorMessage: "Please provide title and contents for the post."})
     }else {
-    Posts.insert(postData)
+    Posts.insertPost(postData)
         .then(postData => {
             res.status(201).json(postData);
         })
         .catch(error => {
-            console.log("POST error /api/posts", error);
+            console.log("POST error /api/users/:id/posts", error);
             res.status(500)
                 .json({ error: "There was an error while saving the post to the database"})
         });
     }
 });
 
-//POST /api/posts/:id/comments
+//POST /api/users/:id/posts/:id/comments
 router.post('/:id/comments', restricted, (req, res) => {
     const commentData = req.body;
     if(!commentData.text){
@@ -52,25 +93,9 @@ router.post('/:id/comments', restricted, (req, res) => {
     } 
 })
 
-//GET /api/posts/:id
-router.get('/:id', restricted, (req, res) => {
-    const id = req.params.id;
-    Posts.findById(id)
-        .then(post => {
-            if(post.length) {
-                res.status(200).json(post);
-            }else{
-                res.status(404).json({ message: "The post with the specified ID does not exist."})
-            }
-        })
-        .catch(error => {
-            console.log("Error on GET api/posts/:id", error);
-            res.status(500).json({error: "The post information could not be retrieved."})
-        })
-    
-})
 
-//GET /api/posts/:id/comments
+
+//GET /api/users/:id/posts/:id/comments
 router.get('/:id/comments', restricted, (req, res) => {
     const id = req.params.id;
     Posts.findCommentById(id)
