@@ -9,7 +9,7 @@ module.exports = {
 }
 
 function find(){
-    return db('trades').select('id', 'date', 'time', 'ticker', 'quantity', 'price', 'buy-sell', 'broker', 'user_id')
+    return db('trades');
 }
 
 function findById(id) {
