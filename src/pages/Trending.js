@@ -20,7 +20,6 @@ const Trending = () => {
       method: 'GET'
     }).then((response) => response.json())
       .then((result) => {
-        console.log({ result })
         const quote = result['Global Quote']
         if (quote) {
           const formattedTrend = {
@@ -45,7 +44,7 @@ const Trending = () => {
       setLoading(false)
     })
   }, [])
-  console.log({ trending })
+
   return loading ? <Spinner color='primary' /> : <TrendingContainer>
     <Header1>Top Trending Stocks</Header1>
     {trending.length ? trending.map((trend) =>
