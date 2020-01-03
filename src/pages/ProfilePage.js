@@ -8,7 +8,6 @@ import PortfolioGraph from "../components/PortfolioGraph";
 import { ProfileContainer } from "../components/Containers";
 import { Header1, SubHeader } from "../components/Headers";
 import { ProfileText } from "../components/Text";
-import { UserContext } from "../utils/Contexts.js";
 
 const StyledSection = styled.section`
   box-sizing: border-box;
