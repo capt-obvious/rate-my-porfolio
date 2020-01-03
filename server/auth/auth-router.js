@@ -10,9 +10,11 @@ router.post("/register", (req, res) => {
   user.password = hash;
 
   Users.add(user)
-    .then(saved => {
+    .then(addedUser => {
+      const token = signToken(addedUser)
       res.status(201).json({
-        saved,
+        user: addedUser,
+        token,
         message: "User registered successfully"
       });
     })

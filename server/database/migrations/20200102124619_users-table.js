@@ -11,6 +11,7 @@ exports.up = function(knex) {
     users.date("date");
     users.string("address", 128);
     users.string("city", 128).notNullable();
+    users.string("state", 128);
     users.integer("zip", 5);
     users.string("country").notNullable();
     users.string("gender");
