@@ -8,6 +8,7 @@ import Feed from "./components/Feed";
 import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import TradeForm from "./components/TradeForm.js";
+import Trending from './pages/Trending'
 import Welcome from "./pages/Welcome";
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
         </Route>
         <Route path='/profile/:id'>
           <ProfilePage />
+        </Route>
+        <Route to='/trending'>
+          <Trending />
         </Route>
         <Route path="/tradeform">
           <TradeForm />

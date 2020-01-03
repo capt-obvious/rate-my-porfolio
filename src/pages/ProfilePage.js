@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import { Spinner } from 'reactstrap'
 import Avatar from "../components/Avatar";
 import Posts from "../components/Posts";
 import PortfolioGraph from "../components/PortfolioGraph";
 import { ProfileContainer } from "../components/Containers";
 import { Header1, SubHeader } from "../components/Headers";
 import { ProfileText } from "../components/Text";
-import { UserContext } from "../utils/Contexts.js";
+import { UserContext } from "../utils/Contexts";
 
 const StyledSection = styled.section`
   box-sizing: border-box;
@@ -61,7 +62,7 @@ const ProfilePage = () => {
     loadData()
   }, [])
 
-  return loading ? <div>Loading...</div> : <ProfileContainer>
+  return loading ? <Spinner color="primary" /> : <ProfileContainer>
     <UserSection>
       <Avatar />
       <Header1>Username</Header1>
