@@ -19,11 +19,9 @@ import { UserContext } from "../utils/Contexts.js";
 const NavDiv = styled.div`
   display: inline-block;
   margin-top: 0px;
-  ${'' /* position: fixed; */}
-  ${'' /* width: 25%; */}
   min-width: 200px;
   background-color: white;
-  height: 100vh;
+  min-height: 100vh;
   border-right: 1px solid lightgrey;
 `;
 

@@ -47,12 +47,15 @@ const Trending = () => {
   }, [])
 
   return loading ? <Loading /> : <TrendingContainer>
-    {trending.length ? trending.map((trend) =>
-      <ListGroup key={trend.symbol} horizontal>
-        <FullListGroupItem color='info'>{trend.symbol}</FullListGroupItem>
-        <FullListGroupItem>{`$${trend.price}`}</FullListGroupItem>
-        <FullListGroupItem color={trend.change[0] === '-' ? 'danger' : 'success'}>{trend.change}</FullListGroupItem>
-      </ListGroup>) : <Header1>{'No Trending Stocks Right Now!'}</Header1>}
+    {trending.length ? <>
+      <Header1>Top Trending Stocks</Header1>
+      {trending.map((trend) =>
+        <ListGroup key={trend.symbol} horizontal>
+          <FullListGroupItem color='info'>{trend.symbol}</FullListGroupItem>
+          <FullListGroupItem>{`$${trend.price}`}</FullListGroupItem>
+          <FullListGroupItem color={trend.change[0] === '-' ? 'danger' : 'success'}>{trend.change}</FullListGroupItem>
+        </ListGroup>)}
+      </> : <Header1>{'No Trending Stocks Right Now!'}</Header1>}
   </TrendingContainer>
 }
 
