@@ -22,23 +22,21 @@ function App() {
   const { user, setUser } = React.useContext(UserContext);
 
   React.useEffect(() => {
-    if (!user.username) {
+    if (!user.id) {
       const token = window.localStorage.getItem("token");
-      console.log(token);
-      axios
-        .post("http://localhost:3300/api/auth/tokenLogin", { token })
-        .then(res => setUser(res.data.user));
+      if (token) {
+        axios
+          .post("http://localhost:3300/api/auth/tokenLogin", { token })
+          .then(res => setUser(res.data.user));
+      }
     }
   }, []);
 
-  return user.username ? (
+  return user.id ? (
     <Router>
       <Switch>
         <Route exact path="/">
           <Home />
-        </Route>
-        <Route path="/welcome">
-          <Welcome />
         </Route>
         <Route
           path="/profile/:id"
@@ -49,6 +47,17 @@ function App() {
         </Route>
         <Route path="*">
           <Redirect to="/" />
+        </Route>
+      </Switch>
+    </Router>
+  ) : (
+    <Router>
+      <Switch>
+        <Route path="/welcome">
+          <Welcome />
+        </Route>
+        <Route path="*">
+          <Redirect to="/welcome" />
         </Route>
       </Switch>
     </Router>
