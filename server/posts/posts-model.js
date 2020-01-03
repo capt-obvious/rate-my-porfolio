@@ -50,14 +50,14 @@ module.exports = {
 
   function findUserPosts(userId) {
     return db('posts')
-      .join('users', 'users.id', '=', 'posts.user_id')
+      .join('users', 'posts.user_id', '=', 'user.id')
       .select('posts.*')
       .where('user_id', userId);
   }
   
   function findPostById(id) {
     return db('posts')      
-      .join('users', 'users.id', '=', 'posts.user_id')
+      .join('users', 'posts.user_id', '=', 'user.id')
       .select('posts.*')
       .where('posts.id', id);
   }
