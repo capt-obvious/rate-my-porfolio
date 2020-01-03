@@ -17,8 +17,10 @@ function findBy(filter){
     .where(filter);
 }
 async function add(user){
-    const [id] = await db('users').insert(user);
-    return findById(id);
+    const [id] = await db('users')
+    .insert(user, 'id')
+    .returning('id');
+    return findById(id); //do I need this line??
 };
 
 function findById(id){
