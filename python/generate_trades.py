@@ -5,6 +5,7 @@ import pandas as pd
 import requests
 import random
 
+
 TICKERS = 'AAPL FB GOOG MSFT TSLA'
 STOCKS = ['AAPL', 'FB', 'GOOG', 'MSFT', 'TSLA']
 START_DATE = '2019-01-01'
@@ -12,29 +13,40 @@ END_DATE = '2020-01-01'
 
 data = yf.download(TICKERS, start=START_DATE, end=END_DATE)
 
-STOCKS = ['AAPL', 'FB', 'GOOG', 'MSFT', 'TSLA']
+STOCKS = [
+            'AAPL', 
+            'FB', 
+            'GOOG', 
+            'MSFT', 
+            'TSLA'
+        ]
+
 portfolio = {
-    "AAPL":0,
-    "FB":0,
-    "GOOG":0,
-    "MSFT":0,
-    "TSLA":0}
+                "AAPL":0,
+                "FB":0,
+                "GOOG":0,
+                "MSFT":0,
+                "TSLA":0
+            }
 
 columns = [
-        'ticker',
-        'price',
-        'volume',
-        'action']
+            'ticker',
+            'price',
+            'volume',
+            'action',
+            'date'
+          ]
 
 df = pd.DataFrame(columns=columns)
 
 for i in range(250):
-    this_int = random.randrange(20)
-    if this_int < 5:
-        ticker = STOCKS[this_int]
-        price = data.iloc[i,this_int]
+    this_stock = random.randrange(20)
+    if this_stock < 5:
+        ticker = STOCKS[this_stock]
+        price = data.iloc[i,this_stock]
         volume = random.randrange(1,10)*100
-        action = 'BUY' 
+        action = 'BUY'
+        date = data.index[i]
         if random.randrange(10) < 4:
             action = 'SELL'
             if volume > portfolio[ticker]:
@@ -43,28 +55,29 @@ for i in range(250):
         else:
             portfolio[ticker] = portfolio[ticker] + volume
 
-        input_trade = [ticker, price, volume, action]
+        input_trade = [ticker, price, volume, action, date]
+
         df.loc[-1] = input_trade
         df.index = df.index + 1
         df = df.sort_index()
-        print(ticker, price, volume, action, portfolio)
+        print(ticker, '\t', "{0:.2f}".format(price), '\t', volume, '\t', action, '\t', date, portfolio)
 
-        for url in ['https://XXX.XXX.XXX.XXX']:
-            try:
-                response = requests.post(
-                                            url,
-                                            json={
-                                                    'ticker':ticker,
-                                                    'price':price,
-                                                    'volume':volume,
-                                                    'action':action}
-                                        )
-            except HTTPError as http_err:
-                print(f'HTTP error has occurred: {http_err}')
-            except Exception as err:
-                print(f'Non-HTTP error has occurred: {err}')
-            else:
-                print('Success.')
+        #for url in ['https://XXX.XXX.XXX.XXX']:
+        #    try:
+        #        response = requests.post(
+        #                                    url,
+        #                                    json={
+        #                                            'ticker':ticker,
+        #                                            'price':price,
+        #                                            'volume':volume,
+        #                                            'action':action}
+        #                                )
+        #    except HTTPError as http_err:
+        #        print(f'HTTP error has occurred: {http_err}')
+        #    except Exception as err:
+        #        print(f'Non-HTTP error has occurred: {err}')
+        #    else:
+        #        print('Success.')
 
 
 
