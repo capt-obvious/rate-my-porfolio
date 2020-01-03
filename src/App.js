@@ -42,6 +42,9 @@ function App() {
           path="/profile/:id"
           render={props => <ProfilePage {...props} />}
         />
+        <Route path="/trending">
+          <Trending />
+        </Route>
         <Route path="/tradeform">
           <TradeForm />
         </Route>
