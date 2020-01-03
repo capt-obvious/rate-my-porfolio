@@ -43,7 +43,7 @@ async function add(user){
 
 async function update(id, changes){
     return db('users')
-    .where({ id })
+    .where('id', id)
     .update(changes)
 }
 

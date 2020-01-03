@@ -21,6 +21,7 @@ router.get('/:id', restricted, (req, res) => {
 
 // Do we need this endpoint to be restricted? 
 // I'd imagine we're trying to register a new user with this endpoint.
+
 router.put('/:id', restricted, (req, res) => {
     const payload = {
         username: req.body.username,
@@ -42,12 +43,12 @@ router.put('/:id', restricted, (req, res) => {
             res.status(200).json(updatedUser)
         })
         .catch(error => {
-
+            res.send(error)
         })
 })
 
 router.delete('/:id', restricted, (req, res) => {
-    Users.remove(req.params.id) // not sure if this line would work. Should test both.
+    Users.remove(req.params.id)
     .then(user => {
         if(user > 0) {
             res
