@@ -4,10 +4,21 @@ import yfinance as yf
 import pandas as pd
 import requests
 import random
+import sys
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import csv
+import pandas as pd
+from create_db import Trade, Base
+from datetime import date, time, datetime
+
+
+USER_ID = sys.argv[1]
+BROKER = sys.argv[2]
+TIME = '00:00:00'
 
 TICKERS = 'AAPL FB GOOG MSFT TSLA'
-STOCKS = ['AAPL', 'FB', 'GOOG', 'MSFT', 'TSLA']
 START_DATE = '2019-01-01'
 END_DATE = '2020-01-01'
 
@@ -32,9 +43,12 @@ portfolio = {
 columns = [
             'ticker',
             'price',
-            'volume',
-            'action',
-            'date'
+            'quantity',
+            'buy_sell',
+            'date',
+            'broker',
+            'user_id',
+            'time',
           ]
 
 df = pd.DataFrame(columns=columns)
@@ -44,91 +58,30 @@ for i in range(250):
     if this_stock < 5:
         ticker = STOCKS[this_stock]
         price = data.iloc[i,this_stock]
-        volume = random.randrange(1,10)*100
+        quantity = random.randrange(1,10)*100
         action = 'BUY'
         date = data.index[i]
         if random.randrange(10) < 4:
             action = 'SELL'
-            if volume > portfolio[ticker]:
-                volume = portfolio[ticker]
-            portfolio[ticker] = portfolio[ticker] - volume
+            if quantity > portfolio[ticker]:
+                quantity = portfolio[ticker]
+            portfolio[ticker] = portfolio[ticker] - quantity
         else:
-            portfolio[ticker] = portfolio[ticker] + volume
+            portfolio[ticker] = portfolio[ticker] + quantity
 
-        input_trade = [ticker, price, volume, action, date]
+        string_date = str(date.year) + '-' + str(date.month).zfill(2) + '-' + str(date.day).zfill(2)
+        buy_sell = 0
+        if action == 'BUY':
+            buy_sell = 1
+        input_trade = [ticker, price, quantity, buy_sell, date, BROKER, USER_ID, TIME]
+
+        print(input_trade)
 
         df.loc[-1] = input_trade
         df.index = df.index + 1
         df = df.sort_index()
-        print(ticker, '\t', "{0:.2f}".format(price), '\t', volume, '\t', action, '\t', date, portfolio)
 
-        #for url in ['https://XXX.XXX.XXX.XXX']:
-        #    try:
-        #        response = requests.post(
-        #                                    url,
-        #                                    json={
-        #                                            'ticker':ticker,
-        #                                            'price':price,
-        #                                            'volume':volume,
-        #                                            'action':action}
-        #                                )
-        #    except HTTPError as http_err:
-        #        print(f'HTTP error has occurred: {http_err}')
-        #    except Exception as err:
-        #        print(f'Non-HTTP error has occurred: {err}')
-        #    else:
-        #        print('Success.')
+import sqlite3
+conn = sqlite3.connect('dev.sqlite3')
+df.to_sql('trades', conn, if_exists='replace')
 
-
-
-# sql = {
-#    'User'    : 'user',
-#    'Pass'    : 'password',
-#    'Address' : 'XXX.XXX.XXX.XXX',
-#    'Port'    : 'XXXX',
-#    'DB'      : 'database name',
-#    'Table'   : 'table name'
-#    }
-    
-
-# function to export dataframe to SQL database
-# def exportDFtoSQL(dataframe: any, sql: Dict[str, str]):
-    
-    #sql = {'User'   : 'user',
-    #    'Pass'      : 'password',
-    #    'Address'   : 'XXX.XXX.XXX.XXX',
-    #    'Port'      : 'XXXX',
-    #    'DB'        : 'database name',
-    #    'Table'     : 'table name'}
-    
-    # connect to SQL db
-#    try:
-#        engine = create_engine('mysql+mysqlconnector://'
-#                +sql['User']+':'
-#                +sql['Pass']+'@'
-#                +sql['Address']+':'
-#                +sql['Port']+'/'
-#                +sql['DB'], echo=False)
-#    except mysql.connector.Error as err:
-#        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-#            logging.warning(errorcode.ER_ACCESS_DENIED_ERROR)
-#            print("Wrong user name or password")
-#        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-#            logging.warning(errorcode.ER_BAD_DB_ERROR)
-#            print("Database does not exist")
-#        else:
-#            logging.warning(err)
-#            print(err)
-#    else:
-#        logging.info('Connected to ' + sql['DB'])
-#        print('Connected to ' + sql['DB'])
-#
-#    dataframe.to_sql(name=sql['Table'], con=engine, if_exists='replace')
-
-# CREATE TABLE Errors (
-# id int not null AUTO_INCREMENT,
-# run_sample_id varchar(15),
-# runid varchar(15),
-# bip_version varchar(15),
-# ticket varchar(15),
-# PRIMARY KEY (id))
