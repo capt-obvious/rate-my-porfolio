@@ -1,11 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
-import Avatar from '../components/Avatar'
-import Posts from '../components/Posts'
-import PortfolioGraph from '../components/PortfolioGraph'
-import { ProfileContainer } from '../components/Containers'
-import { Header1, SubHeader } from '../components/Headers'
-import { ProfileText } from '../components/Text'
+import React from "react";
+import styled from "styled-components";
+import Avatar from "../components/Avatar";
+import Posts from "../components/Posts";
+import PortfolioGraph from "../components/PortfolioGraph";
+import { ProfileContainer } from "../components/Containers";
+import { Header1, SubHeader } from "../components/Headers";
+import { ProfileText } from "../components/Text";
+import { UserContext } from "../utils/Contexts.js";
 
 const StyledSection = styled.section`
   box-sizing: border-box;
@@ -18,11 +19,11 @@ const StyledSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
-const UserSection = styled(StyledSection)``
+const UserSection = styled(StyledSection)``;
 
-const HoldingsSection = styled(StyledSection)``
+const HoldingsSection = styled(StyledSection)``;
 
 const Holdings = styled.div`
   background: lightgray;
@@ -33,50 +34,62 @@ const Holdings = styled.div`
   flex-direction: column;
 
   font-weight: bold;
-`
-const GraphSection = styled(StyledSection)``
-const PortfolioSection = styled(StyledSection)``
-const PostsSection = styled(StyledSection)``
+`;
+const GraphSection = styled(StyledSection)``;
+const PortfolioSection = styled(StyledSection)``;
+const PostsSection = styled(StyledSection)``;
 
 const Row = styled.div`
   display: grid;
   grid-auto-flow: column;
   grid-gap: 1em;
-`
+`;
 
 const ProfilePage = () => {
-  const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
+  const { user, setUser } = React.useContext(UserContext);
+  console.log(user);
 
-  return <ProfileContainer>
-    <UserSection>
-      <Avatar />
-      <Header1>Username</Header1>
-      <ProfileText>User Bio</ProfileText>
-      <Row>
-        <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
-      </Row>
-      <ProfileText>Location, stat</ProfileText>
-    </UserSection>
-    <HoldingsSection>
-      <Header1>Top 10 Holdings</Header1>
-      <Holdings>
-        {companies.map((company, idx) => <div key={idx}>{company}</div>)}
-      </Holdings>
-    </HoldingsSection>
-    <GraphSection>
-      <PortfolioGraph />
-    </GraphSection>
-    <PortfolioSection>
-      <Header1>Portfolio Value</Header1>
-      <p>$14,642.00</p>
-      <SubHeader>Annualized Total Return</SubHeader>
-      <p>18%</p>
-    </PortfolioSection>
-    <PostsSection>
-      <Header1>Posts</Header1>
-      <Posts />
-    </PostsSection>
-  </ProfileContainer>
-}
+  const [companies, setCompanies] = React.useState([
+    "Company 1",
+    "Company 2",
+    "Company 3"
+  ]);
 
-export default ProfilePage
+  return (
+    <ProfileContainer>
+      <UserSection>
+        <Avatar />
+        <Header1>Username</Header1>
+        <ProfileText>User Bio</ProfileText>
+        <Row>
+          <ProfileText>10 Followers</ProfileText>
+          <ProfileText>10 Following</ProfileText>
+        </Row>
+        <ProfileText>Location, stat</ProfileText>
+      </UserSection>
+      <HoldingsSection>
+        <Header1>Top 10 Holdings</Header1>
+        <Holdings>
+          {companies.map((company, idx) => (
+            <div key={idx}>{company}</div>
+          ))}
+        </Holdings>
+      </HoldingsSection>
+      <GraphSection>
+        <PortfolioGraph />
+      </GraphSection>
+      <PortfolioSection>
+        <Header1>Portfolio Value</Header1>
+        <p>$14,642.00</p>
+        <SubHeader>Annualized Total Return</SubHeader>
+        <p>18%</p>
+      </PortfolioSection>
+      <PostsSection>
+        <Header1>Posts</Header1>
+        <Posts />
+      </PostsSection>
+    </ProfileContainer>
+  );
+};
+
+export default ProfilePage;
