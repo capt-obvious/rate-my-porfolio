@@ -1,7 +1,14 @@
 import React from 'react'
 import * as d3 from 'd3'
+import styled from 'styled-components'
+import { Header1 } from './Headers'
 
-const dataReturn = [{name: 'xxa', price: 120}, {name: 'xxb', price: 110}, {name: 'xxc', price: 150}, {name: 'xxd', price: 180}, {name: 'xxe', price:150}, {name: 'xxf', price: 170}, {name: 'xxg', price: 109}, {name: 'xxh', price:190 },  {name: 'xxi', price: 107}, {name: 'xxj', price: 105},]
+const GraphContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  min-width: 20em;
+`
 
 const drawBars = (dataset, ref) => {
   const initialAnimDelay = 300
@@ -20,10 +27,9 @@ const drawBars = (dataset, ref) => {
     left: 60
   }
 
-  const { offsetWidth: width, offsetHeight: height } = ref
-  console.log({ ref, width, height })
-  // const width = 500
-  // const height = 700
+  const width = ref.offsetWidth
+  const height = ref.offsetHeight
+
   const colors = d3.scale.linear()
     .domain([0, dataset.length])
     .range(["purple", "red"])
@@ -32,8 +38,6 @@ const drawBars = (dataset, ref) => {
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .call(addResponsive)
-    // .attr('viewBox', '0 0 ' + width + ' ' + height)
-    // .attr('preserveAspectRatio', 'xMinYMin meet')
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -113,15 +117,18 @@ function addResponsive(svg) {
   }
 }
 
-const PortfolioGraph = () => {
+const fakeData = [{name: 'xxa', price: 120}, {name: 'xxb', price: 110}, {name: 'xxc', price: 150}, {name: 'xxd', price: 180}, {name: 'xxe', price:150}, {name: 'xxf', price: 170}, {name: 'xxg', price: 109}, {name: 'xxh', price:190 },  {name: 'xxi', price: 107}, {name: 'xxj', price: 105},]
+
+const PortfolioGraph = ({ data = [] }) => {
   const graphRef = React.createRef()
 
   React.useEffect(() => {
-    if (graphRef.current) drawBars(dataReturn, graphRef.current)
+    if (graphRef.current) drawBars(data.length ? data : fakeData, graphRef.current)
   }, [graphRef.current])
 
-  return <div>PortfolioGraph
-    <div ref={graphRef} />
+  return <div>
+    <Header1>Top 10 Holdings</Header1>
+    <GraphContainer ref={graphRef} />
   </div>
 }
 
