@@ -1,7 +1,9 @@
 import React from "react";
+import {UserContext} from '../utils/Contexts.js'
 
 const TradeForm = () => {
   const [trade, setTrade] = React.useState({});
+  const {user, setUser} = React.useContext(UserContext);
 
   const handleChange = e => {
     setTrade({
@@ -14,7 +16,10 @@ const TradeForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     console.log("trade object: ", trade);
-
+    setUser({
+      trades: [...user.trades, trade]
+    })
+    console.log(user)
     // useEffect to make axios call
 
     return;

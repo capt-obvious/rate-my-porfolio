@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
+import { Spinner } from 'reactstrap'
 import Avatar from "../components/Avatar";
 import Posts from "../components/Posts";
 import PortfolioGraph from "../components/PortfolioGraph";
@@ -45,23 +47,44 @@ const Row = styled.div`
   grid-gap: 1em;
 `;
 
-const ProfilePage = () => {
-  const [loading, setLoading] = React.useState(false)
-  const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
+const ProfilePage = props => {
+  const [loading, setLoading] = React.useState(false);
+  const [companies, setCompanies] = React.useState([
+    "Company 1",
+    "Company 2",
+    "Company 3"
+  ]);
 
-  const { user, setUser } = React.useContext(UserContext)
-  console.log(user, setUser)
+  const { user, setUser } = React.useContext(UserContext);
+  const [localUser, setLocalUser] = React.useState({})
 
-  const loadData = () => {
-    setLoading(true)
-    setLoading(false)
-  }
+  console.log(user, setUser);
+  console.log(props);
+  const fetchData = () => {
+    const token = window.localStorage.getItem("token");
+    console.log(token)
+    axios({
+      method: "get",
+      url: `http://localhost:3300/api/users/${props.match.params.id}`,
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      }
+    })
+      .then(res => {
+        setLocalUser(res.data);
+        console.log('res => ', res)
+      });
+    setLoading(true);
+    setLoading(false);
+  };
 
   React.useEffect(() => {
-    loadData()
-  }, [])
+    fetchData();
+  }, []);
 
-  return loading ? <div>Loading...</div> : <ProfileContainer>
+  return loading ? <Spinner color="primary" /> : <ProfileContainer>
     <UserSection>
       <Avatar />
       <Header1>Username</Header1>
