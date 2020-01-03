@@ -5,21 +5,17 @@ const restricted = require("../auth/authenticate-middleware");
 
 // GET /api/users/  return all users
 router.get('/', restricted, (req, res) => {
-    Users.find()
+  Users.find()
     .then(users => {
       res.json(users);
     })
     .catch(err => res.send(err));
 });
 
-router.get("/:username", (req, res) => {
-
-  Users.findByUserName( req.params.username)
-    .then(user => {
-        console.log(user)
-      return res.json(user);
-    })
-    .catch(err => res.send(err));
+router.get('/:username', restricted, (req, res) => {
+  Users.findByUserName(req.params.username)
+    .then(user => res.json(user))
+    .catch(err => res.send(err))
 });
 module.exports = router;
 //GET /api/users/:id   get user by id
@@ -36,4 +32,4 @@ module.exports = router;
 
 // delete user
 
-module.exports = router;
+// module.exports = router;

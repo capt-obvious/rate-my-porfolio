@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 
 export const ProfileContainer = styled.div`
+  padding: 2em;
   display: grid;
   grid-gap: 1em;
   justify-content: center;
@@ -8,7 +9,17 @@ export const ProfileContainer = styled.div`
 `
 
 export const TrendingContainer = styled.div`
-  display: grid;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  text-align: center;
+  align-items: center;
+`
+
+export const AbsoluteCenterContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `

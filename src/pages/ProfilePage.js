@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { Spinner } from 'reactstrap'
 import Avatar from "../components/Avatar";
+import Loading from '../components/Loading'
 import Posts from "../components/Posts";
 import PortfolioGraph from "../components/PortfolioGraph";
 import { ProfileContainer } from "../components/Containers";
@@ -49,50 +49,42 @@ const Row = styled.div`
 
 const ProfilePage = props => {
   const [loading, setLoading] = React.useState(false);
+  const [user, setUser] = React.useState({})
   const [companies, setCompanies] = React.useState([
     "Company 1",
     "Company 2",
     "Company 3"
   ]);
 
-  const { user, setUser } = React.useContext(UserContext);
-  const [localUser, setLocalUser] = React.useState({})
-
-  console.log(user, setUser);
-  console.log(props);
   const fetchData = () => {
+    setLoading(true);
     const token = window.localStorage.getItem("token");
-    console.log(token)
     axios({
       method: "get",
       url: `http://localhost:3300/api/users/${props.match.params.id}`,
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        "Authorization": token
       }
     })
       .then(res => {
-        setLocalUser(res.data);
-        console.log('res => ', res)
+        setLoading(false);
+        setUser(res.data);
       });
-    setLoading(true);
-    setLoading(false);
   };
 
   React.useEffect(() => {
     fetchData();
   }, []);
 
-  return loading ? <Spinner color="primary" /> : <ProfileContainer>
+  return loading ? <Loading /> : <ProfileContainer>
     <UserSection>
       <Avatar />
-      <Header1>Username</Header1>
+      <Header1>{user.username}</Header1>
       <ProfileText>User Bio</ProfileText>
       <Row>
         <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
       </Row>
-      <ProfileText>Location, stat</ProfileText>
+      <ProfileText>{`${user.city}, ${user.country}`}</ProfileText>
     </UserSection>
     <HoldingsSection>
       <Header1>Top 10 Holdings</Header1>
