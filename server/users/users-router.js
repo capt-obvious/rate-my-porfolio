@@ -37,7 +37,13 @@ router.put('/:id', restricted, (req, res) => {
         bio: req.body.bio,
         portfolioSize: req.body.portfolio-size
     }
+    const updatedUser = Users.update(req.params.id, payload)
+        .then(post => {
+            res.status(200).json(updatedUser)
+        })
+        .catch(error => {
 
+        })
 })
 
 router.delete('/:id', restricted, (req, res) => {
