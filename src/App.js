@@ -1,16 +1,12 @@
-import React from "react";
-<<<<<<< HEAD
-=======
-
->>>>>>> 8b425b9b6349c3284f853a05238ae5bece6e894b
-import "./App.css";
-import { Route } from "react-router-dom";
-import Navbar from "./components/Navbar.js";
+import React from "react"
+import "./App.css"
+import { Route } from "react-router-dom"
+import Navbar from "./components/Navbar"
 
 // component imports
-import Feed from "./components/Feed/Feed.js";
-import Home from "./pages/Home.js";
-import ProfilePage from "./pages/ProfilePage.js";
+import Feed from "./components/Feed"
+import Home from "./pages/Home"
+import ProfilePage from "./pages/ProfilePage"
 
 function App() {
   return (
@@ -25,4 +21,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
