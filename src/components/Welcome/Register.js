@@ -69,25 +69,6 @@ class Register extends Component {
       });
   }
 
-<<<<<<< HEAD
-  render() {
-    const { username, email, password, city, country } = this.state;
-    return (
-      <Form className="registerStyle" onSubmit={e => this.submitForm(e)}>
-        <Row form>
-          <Col md={2}>
-            <FormGroup>
-              <Label for="exampleName">Username</Label>
-              <Input
-                valid
-                type="username"
-                name="username"
-                id="exampleName"
-                placeholder="username"
-                value={username}
-                onChange={e => this.handleChange(e)}
-              />
-=======
     render() {
         const { username, email, password } = this.state;
         return (
@@ -204,7 +185,6 @@ class Register extends Component {
             <FormGroup check>
             <Input type="checkbox" name="check" id="exampleCheck"/>
             <Label for="exampleCheck" check>Terms of Service</Label>
->>>>>>> david-francis
             </FormGroup>
             <FormGroup>
               <Label for="examplePassword">Password</Label>
@@ -249,7 +229,7 @@ class Register extends Component {
               />
             </FormGroup>
           </Col>
-        </Row>
+        // </Row>
         <Col md={4}>
           <FormGroup>
             <Label for="exampleAddress">Address</Label>
@@ -316,7 +296,7 @@ class Register extends Component {
           </Label>
         </FormGroup>
         <Button>Sign in</Button>
-      </Form>
+    </Form>
     );
   }
 }
