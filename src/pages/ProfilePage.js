@@ -46,50 +46,51 @@ const Row = styled.div`
 `;
 
 const ProfilePage = () => {
-  const { user, setUser } = React.useContext(UserContext);
-  console.log(user);
+  const [loading, setLoading] = React.useState(false)
+  const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
 
-  const [companies, setCompanies] = React.useState([
-    "Company 1",
-    "Company 2",
-    "Company 3"
-  ]);
+  const { user, setUser } = React.useContext(UserContext)
+  console.log(user, setUser)
 
-  return (
-    <ProfileContainer>
-      <UserSection>
-        <Avatar />
-        <Header1>Username</Header1>
-        <ProfileText>User Bio</ProfileText>
-        <Row>
-          <ProfileText>10 Followers</ProfileText>
-          <ProfileText>10 Following</ProfileText>
-        </Row>
-        <ProfileText>Location, stat</ProfileText>
-      </UserSection>
-      <HoldingsSection>
-        <Header1>Top 10 Holdings</Header1>
-        <Holdings>
-          {companies.map((company, idx) => (
-            <div key={idx}>{company}</div>
-          ))}
-        </Holdings>
-      </HoldingsSection>
-      <GraphSection>
-        <PortfolioGraph />
-      </GraphSection>
-      <PortfolioSection>
-        <Header1>Portfolio Value</Header1>
-        <p>$14,642.00</p>
-        <SubHeader>Annualized Total Return</SubHeader>
-        <p>18%</p>
-      </PortfolioSection>
-      <PostsSection>
-        <Header1>Posts</Header1>
-        <Posts />
-      </PostsSection>
-    </ProfileContainer>
-  );
-};
+  const loadData = () => {
+    setLoading(true)
+    setLoading(false)
+  }
+
+  React.useEffect(() => {
+    loadData()
+  }, [])
+
+  return loading ? <div>Loading...</div> : <ProfileContainer>
+    <UserSection>
+      <Avatar />
+      <Header1>Username</Header1>
+      <ProfileText>User Bio</ProfileText>
+      <Row>
+        <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
+      </Row>
+      <ProfileText>Location, stat</ProfileText>
+    </UserSection>
+    <HoldingsSection>
+      <Header1>Top 10 Holdings</Header1>
+      <Holdings>
+        {companies.map((company, idx) => <div key={idx}>{company}</div>)}
+      </Holdings>
+    </HoldingsSection>
+    <GraphSection>
+      <PortfolioGraph />
+    </GraphSection>
+    <PortfolioSection>
+      <Header1>Portfolio Value</Header1>
+      <p>$14,642.00</p>
+      <SubHeader>Annualized Total Return</SubHeader>
+      <p>18%</p>
+    </PortfolioSection>
+    <PostsSection>
+      <Header1>Posts</Header1>
+      <Posts />
+    </PostsSection>
+  </ProfileContainer>
+}
 
 export default ProfilePage;

@@ -69,6 +69,7 @@ class Register extends Component {
       });
   }
 
+<<<<<<< HEAD
   render() {
     const { username, email, password, city, country } = this.state;
     return (
@@ -86,6 +87,124 @@ class Register extends Component {
                 value={username}
                 onChange={e => this.handleChange(e)}
               />
+=======
+    render() {
+        const { username, email, password } = this.state;
+        return (
+        <Form className='registerStyle' onSubmit={ (e) => this.submitForm(e) }>
+            <Row form>
+            <Col md={2}>
+                <FormGroup>
+                    <Label for="exampleName">Username</Label>
+                    <Input 
+                        type="username" 
+                        name="username" 
+                        id="exampleName" 
+                        placeholder="username" 
+                        value= { username }
+                        onChange={ (e) => this.handleChange(e) }
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="examplePassword">Password</Label>
+                    <Input 
+                        type="password" 
+                        name="password" 
+                        id="examplePassword" 
+                        placeholder="password" 
+                        value = { password }
+                        onChange={ (e) => this.handleChange(e) }
+                    />
+                </FormGroup>
+            </Col>
+            <Col md={2}>
+                <FormGroup>
+                    <Label for="exampleEmail">Email</Label>
+                    <Input 
+                        valid type="email" 
+                        name="email" 
+                        id="exampleEmail" 
+                        placeholder="email" 
+                        value= { email }
+                        valid={ this.state.validate.emailState === 'has-success' }
+                        invalid={ this.state.validate.emailState === 'has-danger' }
+                        onChange={ (e) => {
+                            this.validateEmail(e)
+                            this.handleChange(e)
+                        } }
+                    />
+                    <FormFeedback invalid>*please enter a valid email</FormFeedback>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="examplePassword">Confirm Password</Label>
+                    <Input 
+                        type="password" 
+                        name="password" 
+                        id="examplePassword" 
+                        placeholder="password" 
+                        value = { password }
+                        onChange={ (e) => this.handleChange(e) }
+                    />
+                </FormGroup>
+            </Col>
+            </Row>
+            <Col md={4}>
+                <FormGroup>
+                    <Label for="exampleAddress">Address</Label>
+                    <Input 
+                        type="text" 
+                        name="address" 
+                        id="exampleAddress" 
+                        placeholder="1234 Main St"/>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="exampleAddress2">Address 2</Label>
+                    <Input 
+                        type="text" 
+                        name="address2" 
+                        id="exampleAddress2" 
+                        placeholder="Apartment, studio, or floor"/>
+                </FormGroup>
+            </Col>
+            <Row form>
+            <Col md={2}>
+                <FormGroup>
+                <Label for="exampleCity">City</Label>
+                <Input 
+                    type="text" 
+                    name="city" 
+                    id="exampleCity"
+                    placeholder='San Francisco'
+                    />
+                </FormGroup>
+            </Col>
+            <Col md={1}>
+                <FormGroup>
+                <Label for="exampleState">State</Label>
+                <Input 
+                    type="text" 
+                    name="state" 
+                    id="exampleState"
+                    placeholder='CA'
+                    />
+                </FormGroup>
+            </Col>
+            <Col md={1}>
+                <FormGroup>
+                <Label for="exampleZip">Zip</Label>
+                <Input 
+                    type="text" 
+                    name="zip" 
+                    id="exampleZip"
+                    placeholder='55555'
+                    />
+                </FormGroup>  
+            </Col>
+            </Row>
+            <FormGroup check>
+            <Input type="checkbox" name="check" id="exampleCheck"/>
+            <Label for="exampleCheck" check>Terms of Service</Label>
+>>>>>>> david-francis
             </FormGroup>
             <FormGroup>
               <Label for="examplePassword">Password</Label>
