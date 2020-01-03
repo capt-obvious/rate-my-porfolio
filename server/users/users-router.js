@@ -41,13 +41,17 @@ router.put('/:id', restricted, (req, res) => {
 })
 
 router.delete('/:id', restricted, (req, res) => {
-    // Users.findById(req.params.id) // not sure if this line would work. Should test both.
-    db('users')
-        .where('id', req.params.id)
-        .del()
-    res
-        .status(204)
-        .end()
+    Users.remove(req.params.id) // not sure if this line would work. Should test both.
+    .then(user => {
+        if(user > 0) {
+            res
+            .status(204)
+            .end()
+        }
+    })
+    .catch(error => {
+        res.json({ errorMessage: error})
+    })
 })
 
 module.exports = router;
