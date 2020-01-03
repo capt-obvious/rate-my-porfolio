@@ -1,32 +1,20 @@
 import React from 'react';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-const welcomeButton = {
-    background: 'navy',
-    borderRadius: '6px',
-    color: 'white',
-    textAlign: 'center',
-    padding: '5px',
-    fontSize: '1rem'
-  };
-
-const Login = () => { 
-    return (
-        <div>
-            <form>
-                <input 
-                    id='email-input'
-                    placeholder='email'
-                    type='email'
-                />
-                <input
-                    id='password-input'
-                    placeholder='password'
-                    type='password'
-                />
-            </form>
-            <button style={welcomeButton}>Log In</button>
-        </div>
-    )
+const Login = (props) => {
+  return (
+    <Form inline>
+      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+        <Label for="exampleEmail" className="mr-sm-2">Email</Label>
+        <Input type="email" name="email" id="exampleEmail" placeholder="something@idk.cool" />
+      </FormGroup>
+      <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+        <Label for="examplePassword" className="mr-sm-2">Password</Label>
+        <Input type="password" name="password" id="examplePassword" placeholder="don't tell!" />
+      </FormGroup>
+      <Button>Submit</Button>
+    </Form>
+  );
 }
 
 export default Login;

@@ -1,15 +1,12 @@
 import React from 'react';
 
-import Login from '../components/Welcome/Login';
 import Register from '../components/Welcome/Register';
-import NavBar from '../components/Navbar';
+import WelcomeNav from '../components/Welcome/WelcomeNav';
 
 function Welcome(){
     return (
         <div>
-            <NavBar>
-                <Login />
-            </NavBar>
+            <WelcomeNav />
             <Register /> 
         </div>
     )

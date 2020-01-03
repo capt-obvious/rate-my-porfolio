@@ -8,12 +8,17 @@ import Feed from "./components/Feed";
 import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import TradeForm from "./components/TradeForm.js";
+import Feed from "./components/Feed";
+import Welcome from "./pages/Welcome";
 
 function App() {
   return (
     <div className="">
       <Route exact path="/">
-        <Home />>
+        <Home />
+      </Route>
+      <Route path="/welcome">
+        <Welcome />
       </Route>
       <Route path="/profile/:id">
         <ProfilePage />
