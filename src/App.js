@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-d
 import Navbar from "./components/Navbar"
 
 // component imports
-import Feed from "./components/Feed"
-import Home from "./pages/Home"
-import ProfilePage from "./pages/ProfilePage"
+import Feed from "./components/Feed";
+import Home from "./pages/Home";
+import ProfilePage from "./pages/ProfilePage";
+import TradeForm from "./components/TradeForm.js";
+import Welcome from "./pages/Welcome";
 
 function App() {
   return (
@@ -15,8 +17,14 @@ function App() {
         <Route exact path='/'>
           <Home />
         </Route>
+        <Route path="/welcome">
+          <Welcome />
+        </Route>
         <Route path='/profile/:id'>
           <ProfilePage />
+        </Route>
+        <Route path="/tradeform">
+          <TradeForm />
         </Route>
         <Route path='*'>
           <Redirect to='/' />
@@ -26,4 +34,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

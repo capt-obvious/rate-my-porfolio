@@ -1,119 +1,168 @@
-import React, { useState, useEffect } from 'react';
-import { withFormik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-
-const styleLocationLabel = {
-    fontSize: 14,
-    margin: "4px 0",
-    color: "#8294AA"
-  };
-
-  const styleCardContent = {
-    padding: "4px 16px 20px 16px"
-  };
-
-  const homeButton = {
-    background: 'navy',
-    borderRadius: '6px',
-    color: 'white',
-    textAlign: 'center',
-    padding: '5px',
-    fontSize: '1rem'
-  };
-
-function Register({ errors, touched, values, status }) {
-    const [users, setUsers] = useState([]);
-    useEffect(() => {
-        console.log('status has changed', status);
-        status && setUsers(users => [...users, status]);
-    }, [status]);
-
-    return (
-        <div style={styleCardContent} className='formik-form'>
-            <Form style={styleCard}
-                height='medium'
-                justify='center'
-                align='center'
-                pad='xlarge'
-                background='navy'
-                round='medium'>
-                    <div>
-                        {touched.email && errors.email && <p>{errors.email}</p>}
-                        <Field 
-                            id='email'
-                            type='email'
-                            placeholder='email'
-                            name='email'
-                        />  
-                    </div>
-                    <div>
-                        {touched.password && errors.password && <p>{errors.password}</p>}
-                        <Field 
-                            id='password'
-                            type='password'
-                            placeholder='password'
-                            name='password'
-                        />
-                    </div>
-                    <label htmlFor='terms-of-service'>
-                        <Field
-                            style={styleLocationLabel} 
-                            name='tos' 
-                            type='checkbox' 
-                            checked={values.tos} 
-                        />
-                    </label>
-                    <button style={homeButton} type='submit'>Register</button>
-                </Form>
-                {users.map(user => (
-                    <ul key={user.id}>
-                        <li>name: {user.name}</li>
-                        <li>email: {user.email}</li>
-                    </ul>
-                ))}
-        </div>
+import React, { Component } from 'react';
+import { Col, Row, Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 
 
-    );
-};
 
-const FormikNewForm = withFormik ({
-    mapPropsToValues({ name, email, password, tos }) {
-        return {
-            name: name || '',
-            email: email || '',
-            password: password || '',
-            tos: tos || false
-        };
-    },
-    validationSchema: Yup.object().shape({
-        email: Yup.string()
-            .email('*enter valid email address')
-            .required('*email is required'),
-        password: Yup.string()
-            .min(6, '*password must be 6 characters')
-            .required('*password is required'),
-        tos: Yup.boolean().oneOf([true], '*please accept terms of service')
-    }),
-
-    handleSubmit(values, { resetForm, setStatus, setErrors }) {
-        if (values.email === 'eiancarter@gmail.com') {
-            setErrors({ email: '*user already registered'})
-        } else { 
-            axios
-                .post('https://reqres.in/api/users', values)
-                .then(res => {
-                    console.log('success', res);
-                    resetForm();
-                    setStatus(res.data)
-                })
-                .catch(err => {
-                    console.log(err);
-                    setStatus(false);
-                })
+class Register extends Component {
+    constructor(props) {
+        super(props);
+            this.state = {
+            'username': '',    
+            'email': '',
+            'password': '',
+            validate: {
+                emailState: '',
+            },
         }
+        this.handleChange = this.handleChange.bind(this);
     }
-})(Register);
+    
+    validateEmail(e) {
+        const emailRex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const { validate } = this.state
+          if (emailRex.test(e.target.value)) {
+            validate.emailState = 'has-success'
+          } else {
+            validate.emailState = 'has-danger'
+          }
+          this.setState({ validate })
+        }
+    
+    handleChange = async (event) => {
+        const { target } = event;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const { name } = target;
+        await this.setState({
+            [ name ]: value,
+        });
+    }
 
-export default FormikNewForm;
+    submitForm(e) {
+        e.preventDefault();
+        console.log(`Email: ${this.state.email }`)
+    }
+
+    render() {
+        const { username, email, password } = this.state;
+        return (
+        <Form className='registerStyle' onSubmit={ (e) => this.submitForm(e) }>
+            <Row form>
+            <Col md={2}>
+                <FormGroup>
+                    <Label for="exampleName">Username</Label>
+                    <Input 
+                        valid type="username" 
+                        name="username" 
+                        id="exampleName" 
+                        placeholder="username" 
+                        value= { username }
+                        onChange={ (e) => this.handleChange(e) }
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="examplePassword">Password</Label>
+                    <Input 
+                        type="password" 
+                        name="password" 
+                        id="examplePassword" 
+                        placeholder="password" 
+                        value = { password }
+                        onChange={ (e) => this.handleChange(e) }
+                    />
+                </FormGroup>
+            </Col>
+            <Col md={2}>
+                <FormGroup>
+                    <Label for="exampleEmail">Email</Label>
+                    <Input 
+                        valid type="email" 
+                        name="email" 
+                        id="exampleEmail" 
+                        placeholder="email" 
+                        value= { email }
+                        valid={ this.state.validate.emailState === 'has-success' }
+                        invalid={ this.state.validate.emailState === 'has-danger' }
+                        onChange={ (e) => {
+                            this.validateEmail(e)
+                            this.handleChange(e)
+                        } }
+                    />
+                    <FormFeedback invalid>*please enter a valid email</FormFeedback>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="examplePassword">Confirm Password</Label>
+                    <Input 
+                        type="password" 
+                        name="password" 
+                        id="examplePassword" 
+                        placeholder="password" 
+                        value = { password }
+                        onChange={ (e) => this.handleChange(e) }
+                    />
+                </FormGroup>
+            </Col>
+            </Row>
+            <Col md={4}>
+                <FormGroup>
+                    <Label for="exampleAddress">Address</Label>
+                    <Input 
+                        type="text" 
+                        name="address" 
+                        id="exampleAddress" 
+                        placeholder="1234 Main St"/>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="exampleAddress2">Address 2</Label>
+                    <Input 
+                        type="text" 
+                        name="address2" 
+                        id="exampleAddress2" 
+                        placeholder="Apartment, studio, or floor"/>
+                </FormGroup>
+            </Col>
+            <Row form>
+            <Col md={2}>
+                <FormGroup>
+                <Label for="exampleCity">City</Label>
+                <Input 
+                    type="text" 
+                    name="city" 
+                    id="exampleCity"
+                    placeholder='San Francisco'
+                    />
+                </FormGroup>
+            </Col>
+            <Col md={1}>
+                <FormGroup>
+                <Label for="exampleState">State</Label>
+                <Input 
+                    type="text" 
+                    name="state" 
+                    id="exampleState"
+                    placeholder='CA'
+                    />
+                </FormGroup>
+            </Col>
+            <Col md={1}>
+                <FormGroup>
+                <Label for="exampleZip">Zip</Label>
+                <Input 
+                    type="text" 
+                    name="zip" 
+                    id="exampleZip"
+                    placeholder='55555'
+                    />
+                </FormGroup>  
+            </Col>
+            </Row>
+            <FormGroup check>
+            <Input type="checkbox" name="check" id="exampleCheck"/>
+            <Label for="exampleCheck" check>Terms of Service</Label>
+            </FormGroup>
+            <Button>Sign in</Button>
+        </Form>
+        );
+    }
+  }
+  
+  export default Register;
