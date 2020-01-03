@@ -12,3 +12,12 @@ export const TrendingContainer = styled.div`
   justify-content: center;
   text-align: center;
 `
+
+export const AbsoluteCenterContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

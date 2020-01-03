@@ -1,9 +1,10 @@
 /* global fetch */
 import React from 'react'
 import styled from 'styled-components'
-import { ListGroup, ListGroupItem, Spinner } from 'reactstrap'
+import { ListGroup, ListGroupItem } from 'reactstrap'
 import { TrendingContainer } from '../components/Containers'
 import { Header1 } from '../components/Headers'
+import Loading from '../components/Loading'
 
 const SECRET_API_KEY = '7XJ0DGZYNBCMWHJ9'
 
@@ -45,8 +46,7 @@ const Trending = () => {
     })
   }, [])
 
-  return loading ? <Spinner color='primary' /> : <TrendingContainer>
-    <Header1>Top Trending Stocks</Header1>
+  return loading ? <Loading /> : <TrendingContainer>
     {trending.length ? trending.map((trend) =>
       <ListGroup key={trend.symbol} horizontal>
         <FullListGroupItem color='info'>{trend.symbol}</FullListGroupItem>

@@ -6,17 +6,16 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import axios from "axios";
 
 // component imports
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import TradeForm from "./components/TradeForm.js";
 import Trending from './pages/Trending'
 import Welcome from "./pages/Welcome";
 import { UserContext } from "./utils/Contexts.js";
-import Axios from "axios";
 
 function App() {
   const { user, setUser } = React.useContext(UserContext);
@@ -34,24 +33,26 @@ function App() {
 
   return user.id ? (
     <Router>
-      <Switch>
-        <Route exact path="/">
-          <Home />
-        </Route>
-        <Route
-          path="/profile/:id"
-          render={props => <ProfilePage {...props} />}
-        />
-        <Route path="/trending">
-          <Trending />
-        </Route>
-        <Route path="/tradeform">
-          <TradeForm />
-        </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route
+            path="/profile/:id"
+            render={props => <ProfilePage {...props} />}
+          />
+          <Route path="/trending">
+            <Trending />
+          </Route>
+          <Route path="/tradeform">
+            <TradeForm />
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Layout>
     </Router>
   ) : (
     <Router>
