@@ -1,5 +1,23 @@
 import React from "react";
 import {UserContext} from '../utils/Contexts.js'
+import axios from 'axios'
+
+
+// format date 
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth() + 1; //January is 0!
+
+var yyyy = today.getFullYear();
+if (dd < 10) {
+  dd = '0' + dd;
+} 
+if (mm < 10) {
+  mm = '0' + mm;
+} 
+var today = mm + '/' + dd + '/' + yyyy;
+// done format date
+
 
 const TradeForm = () => {
   const [trade, setTrade] = React.useState({});
@@ -15,14 +33,34 @@ const TradeForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    const token = window.localStorage.getItem('token')
     console.log("trade object: ", trade);
     setUser({
       trades: [...user.trades, trade]
     })
     console.log(user)
     // useEffect to make axios call
+    axios({
+      'method': 'post',
+      'url': 'http://localhost:3300/api/trades',
+      'headers': {
+        "Authorization": token,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      'data': {
+        date: trade.date,
+        ticker: trade.ticker,
+        quantity: Number(trade.shares),
+        price: Number(trade.price),
+        'buy-sell': Boolean(trade.buysell === 'buy'),
+        user_id: Number(user.id)
+    }
 
-    return;
+      })
+      .then(res => console.log({res}))
+
+
   };
 
   return (
