@@ -51,7 +51,7 @@ class Register extends Component {
                 <FormGroup>
                     <Label for="exampleName">Username</Label>
                     <Input 
-                        valid type="username" 
+                        type="username" 
                         name="username" 
                         id="exampleName" 
                         placeholder="username" 
