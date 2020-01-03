@@ -8,13 +8,13 @@ exports.up = function(knex, Promise) {
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("tickets");
+        .inTable("users");
 
     tbl.integer("trades_id")
         .unsigned()
         .notNullable()
         .references("id")
-        .inTable("employees");
+        .inTable("trades");
     })
 };
 
