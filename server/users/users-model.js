@@ -7,7 +7,9 @@ module.exports = {
     findById,
     find,
     findBy,
-    findByUserName
+    findByUserName,
+    update,
+    remove
 };
 
 function find(){
@@ -18,12 +20,7 @@ function findBy(filter){
     return db('users')
     .where(filter);
 }
-async function add(user){
-    const [id] = await db('users')
-    .insert(user, 'id')
-    .returning('id');
-    return findById(id); //do I need this line??
-};
+
 
 function findById(id){
     return db('users')
@@ -33,4 +30,25 @@ function findById(id){
 
 function findByUserName(username){
     return findBy({username}).first();
+}
+
+//C-UD functions
+
+async function add(user){
+    const [id] = await db('users')
+    .insert(user, 'id')
+    .returning('id');
+    return findById(id); //do I need this line??
+};
+
+async function update(id, changes){
+    return db('users')
+    .where({ id })
+    .update(changes)
+}
+
+async function remove(id) {
+    return db('users')
+    .where('id', id)
+    .del();
 }
