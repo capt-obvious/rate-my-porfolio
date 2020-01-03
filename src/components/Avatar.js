@@ -1,7 +1,8 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const Avatar = styled.img.attrs(props => ({
-  alt: props.alt || ''
+  src: "https://avatars.dicebear.com/v2/male/eian.svg",
+  alt: props.alt || ""
 }))`
   border: 1px solid gray;
   border-radius: 100px;
@@ -9,6 +10,6 @@ const Avatar = styled.img.attrs(props => ({
   height: 150px;
   vertical-align: middle;
   object-fit: cover;
-`
+`;
 
-export default Avatar
+export default Avatar;

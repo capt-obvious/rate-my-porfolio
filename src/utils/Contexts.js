@@ -10,7 +10,9 @@ export const UserContextProvider = props => {
     avatar: "",
     bio: "",
     portfolio: [],
-    trades: []
+    trades: [],
+    followers: [],
+    following: []
   };
 
   const reducer = (state, action) => {

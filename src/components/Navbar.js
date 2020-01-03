@@ -53,10 +53,10 @@ const Navbar = () => {
   return (
     <NavDiv className="navbar-sidebar">
       <UL>
-        <StyledLink>Profile/Portfolio</StyledLink>
+        <StyledLink to="/profile/$userId">Profile/Portfolio</StyledLink>
         <StyledLink>Notifications</StyledLink>
         <StyledLink>Watchlist</StyledLink>
-        <StyledLink>Trade [+]</StyledLink>
+        <StyledLink to="/tradeform">Trade [+]</StyledLink>
       </UL>
     </NavDiv>
   );

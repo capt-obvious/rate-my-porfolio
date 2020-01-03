@@ -1,12 +1,13 @@
-import React from "react"
-import "./App.css"
-import { Route } from "react-router-dom"
-import Navbar from "./components/Navbar"
+import React from "react";
+import "./App.css";
+import { Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 // component imports
-import Feed from "./components/Feed"
-import Home from "./pages/Home"
-import ProfilePage from "./pages/ProfilePage"
+import Feed from "./components/Feed";
+import Home from "./pages/Home";
+import ProfilePage from "./pages/ProfilePage";
+import TradeForm from "./components/TradeForm.js";
 
 function App() {
   return (
@@ -17,8 +18,11 @@ function App() {
       <Route path="/profile/:id">
         <ProfilePage />
       </Route>
+      <Route path="/tradeform">
+        <TradeForm />
+      </Route>
     </div>
   );
 }
 
-export default App
+export default App;
