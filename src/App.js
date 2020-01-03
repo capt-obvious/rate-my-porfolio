@@ -1,7 +1,12 @@
-import React from "react"
-import "./App.css"
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom"
-import Navbar from "./components/Navbar"
+import React from "react";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
+import Navbar from "./components/Navbar";
 
 // component imports
 import Home from "./pages/Home";
@@ -13,24 +18,25 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route exact path='/'>
+        <Route exact path="/">
           <Home />
         </Route>
         <Route path="/welcome">
           <Welcome />
         </Route>
-        <Route path='/profile/:id'>
-          <ProfilePage />
-        </Route>
+        <Route
+          path="/profile/:id"
+          render={props => <ProfilePage {...props} />}
+        />
         <Route path="/tradeform">
           <TradeForm />
         </Route>
-        <Route path='*'>
-          <Redirect to='/' />
+        <Route path="*">
+          <Redirect to="/" />
         </Route>
       </Switch>
     </Router>
-  )
+  );
 }
 
 export default App;

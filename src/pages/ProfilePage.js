@@ -7,6 +7,7 @@ import { ProfileContainer } from "../components/Containers";
 import { Header1, SubHeader } from "../components/Headers";
 import { ProfileText } from "../components/Text";
 import { UserContext } from "../utils/Contexts.js";
+import axios from "axios";
 
 const StyledSection = styled.section`
   box-sizing: border-box;
@@ -45,52 +46,82 @@ const Row = styled.div`
   grid-gap: 1em;
 `;
 
-const ProfilePage = () => {
-  const [loading, setLoading] = React.useState(false)
-  const [companies, setCompanies] = React.useState(['Company 1', 'Company 2', 'Company 3'])
+const ProfilePage = props => {
+  const [loading, setLoading] = React.useState(false);
+  const [companies, setCompanies] = React.useState([
+    "Company 1",
+    "Company 2",
+    "Company 3"
+  ]);
 
-  const { user, setUser } = React.useContext(UserContext)
-  console.log(user, setUser)
+  const { user, setUser } = React.useContext(UserContext);
+  const [localUser, setLocalUser ] = React.useState({})
 
-  const loadData = () => {
-    setLoading(true)
-    setLoading(false)
-  }
+  console.log(user, setUser);
+  console.log(props);
+  const fetchData = () => {
+    const token = window.localStorage.getItem("token");
+    console.log(token)
+    axios({
+      method: "get",
+      url: `http://localhost:3300/api/users/${props.match.params.id}`,
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      }
+      // data: {
+      //   username: props.match.params.id
+      // }
+    })
+      .then(res => {setLocalUser(res.data);
+      console.log('res => ', res)});
+   
+    setLoading(true);
+    setLoading(false);
+  };
 
   React.useEffect(() => {
-    loadData()
-  }, [])
+    fetchData();
+  }, []);
 
-  return loading ? <div>Loading...</div> : <ProfileContainer>
-    <UserSection>
-      <Avatar />
-      <Header1>Username</Header1>
-      <ProfileText>User Bio</ProfileText>
-      <Row>
-        <ProfileText>10 Followers</ProfileText><ProfileText>10 Following</ProfileText>
-      </Row>
-      <ProfileText>Location, stat</ProfileText>
-    </UserSection>
-    <HoldingsSection>
-      <Header1>Top 10 Holdings</Header1>
-      <Holdings>
-        {companies.map((company, idx) => <div key={idx}>{company}</div>)}
-      </Holdings>
-    </HoldingsSection>
-    <GraphSection>
-      <PortfolioGraph />
-    </GraphSection>
-    <PortfolioSection>
-      <Header1>Portfolio Value</Header1>
-      <p>$14,642.00</p>
-      <SubHeader>Annualized Total Return</SubHeader>
-      <p>18%</p>
-    </PortfolioSection>
-    <PostsSection>
-      <Header1>Posts</Header1>
-      <Posts />
-    </PostsSection>
-  </ProfileContainer>
-}
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <ProfileContainer>
+      <UserSection>
+        <Avatar />
+  <Header1>Username: {localUser.username} </Header1>
+        <ProfileText>User Bio</ProfileText>
+        <Row>
+          <ProfileText>10 Followers</ProfileText>
+          <ProfileText>10 Following</ProfileText>
+        </Row>
+        <ProfileText>Location, stat</ProfileText>
+      </UserSection>
+      <HoldingsSection>
+        <Header1>Top 10 Holdings</Header1>
+        <Holdings>
+          {companies.map((company, idx) => (
+            <div key={idx}>{company}</div>
+          ))}
+        </Holdings>
+      </HoldingsSection>
+      <GraphSection>
+        <PortfolioGraph />
+      </GraphSection>
+      <PortfolioSection>
+        <Header1>Portfolio Value</Header1>
+        <p>$14,642.00</p>
+        <SubHeader>Annualized Total Return</SubHeader>
+        <p>18%</p>
+      </PortfolioSection>
+      <PostsSection>
+        <Header1>Posts</Header1>
+        <Posts />
+      </PostsSection>
+    </ProfileContainer>
+  );
+};
 
 export default ProfilePage;
