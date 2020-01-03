@@ -13,6 +13,7 @@ import axios from "axios";
 import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import TradeForm from "./components/TradeForm.js";
+import Trending from './pages/Trending'
 import Welcome from "./pages/Welcome";
 import { UserContext } from "./utils/Contexts.js";
 import Axios from "axios";

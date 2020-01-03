@@ -60,7 +60,7 @@ const Navbar = () => {
           Profile/Portfolio
         </StyledLink>
         <StyledLink>Notifications</StyledLink>
-        <StyledLink>Watchlist</StyledLink>
+        <StyledLink to='/trending'>Trending</StyledLink>
         <StyledLink to="/tradeform">Trade [+]</StyledLink>
       </UL>
     </NavDiv>
